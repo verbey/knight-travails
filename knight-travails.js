@@ -18,7 +18,10 @@ function onBoard(pos) {
 
 function knightMoves(start, end) {
 
-	let queue = [new Node(start, 0)];
+	let startNode = new Node(start, 0);
+	startNode.visited = [startNode.pos];
+
+	let queue = [startNode];
 
 	while (queue.length > 0) {
 		const node = queue.shift();
@@ -26,7 +29,7 @@ function knightMoves(start, end) {
 
 		if (pos[0] === end[0] && pos[1] === end[1]) {
 			console.log(`Made it in ${node.moves} moves!`);
-			printPath(node);
+			node.visited.forEach(visitedNode => console.log(visitedNode));
 			return;
 		}
 
@@ -36,22 +39,13 @@ function knightMoves(start, end) {
 		for (const move of possibleMoves) {
 			const next = [pos[0] + move[0], pos[1] + move[1]];
 
-			if (onBoard(next)) {
+			if (onBoard(next) && !node.visited.includes(next)) {
 				let nextNode = new Node(next, moves);
-				nextNode.parent = node;
+				nextNode.visited = [...node.visited, nextNode.pos];
 				queue.push(nextNode);
 			}
 		}
 	}
 }
 
-function printPath(node) {
-	let path = [];
-	while (node) {
-		path.unshift(node.pos);
-		node = node.parent;
-	}
-	console.log(path);
-}
-
-knightMoves([3, 3], [4, 3]);
+knightMoves([0, 0], [7, 7]);
