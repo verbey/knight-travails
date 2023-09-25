@@ -53,3 +53,5 @@ function printPath(node) {
 	}
 	console.log(path);
 }
+
+knightMoves([3, 3], [4, 3]);
